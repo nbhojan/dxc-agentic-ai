@@ -78,7 +78,8 @@ class LLM:
 
     # ---------- embeddings (cached on disk: re-runs cost nothing) ----------
     def _cache_path(self):
-        return os.path.join(self.cache_dir, f"emb_{self.embed_model if not self.offline else 'offline'}.json")
+        name = "offline" if self.offline else re.sub(r"[^A-Za-z0-9._-]", "_", self.embed_model)   # Windows: no ':' in file names
+        return os.path.join(self.cache_dir, f"emb_{name}.json")
 
     def embed(self, texts, op="embed"):
         path = self._cache_path()

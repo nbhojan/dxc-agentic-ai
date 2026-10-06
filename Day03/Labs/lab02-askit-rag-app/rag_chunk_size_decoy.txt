@@ -1,3 +1,0 @@
-Orbit Corp VPN Troubleshooting Overview
-
-VPN error 809 is a remote-access connection failure. Typical troubleshooting includes checking internet connectivity, reconnecting the VPN session, confirming the laptop clock, reviewing gateway connectivity, and escalating persistent VPN problems to IT support. This overview describes the symptom and general diagnostic context only; it does not contain the specific recovery gateway instruction.

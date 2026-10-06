@@ -16,7 +16,7 @@ cd Day04\Labs\lab03-askit-advanced-rag
 python check_setup.py
 python -m streamlit run app.py
 ```
-(START_DAY already installed most packages: the `pip install` line only fills the gaps. There is no virtual environment to activate.)
+(There is no virtual environment to activate. The `pip install` line installs everything this lab needs, including `pytest`.)
 The app opens at http://localhost:8501. **AWS Bedrock is the default**: it uses the same `.env` as the earlier labs (AWS keys + `BEDROCK_SMALL_MODEL_ID`). Nothing to configure.
 *Bedrock not working?* In the sidebar choose **OpenAI (backup)** and paste the key the trainer shares. *No keys at all?* **Offline** mode runs with stand-in models: good for exploring, but the numbers will differ.
 

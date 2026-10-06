@@ -375,6 +375,22 @@ def generate(question, hits):
 st.title("🔎 AskIT · RAG Lab")
 st.caption("Load KB → Chunk → Embed → Store → Retrieve → Generate   ·   Orbit Corp IT helpdesk")
 
+# ---------------------------------------------------------------- UI: Architecture diagram (follows the sidebar settings)
+with st.expander("🏗️ Architecture: how this app works (follows your sidebar settings)"):
+    try:
+        import streamlit.components.v1 as components
+        import arch_diagram
+        _ad_html = arch_diagram.render(
+            chunk_size=chunk_size, overlap=overlap, top_k=top_k, show_ctx=show_ctx,
+            embed_model=BEDROCK_EMBED if primary == "bedrock" else OPENAI_EMBED,
+            chat_model=chat_chain()[0][1], fallback=bool(FALLBACK))
+        if hasattr(st, "iframe"):
+            st.iframe(_ad_html, height=800)
+        else:
+            components.html(_ad_html, height=800, scrolling=True)
+    except Exception as _ad_e:   # the diagram is optional: never break the app
+        st.caption(f"Architecture diagram unavailable: {_ad_e}")
+
 with st.sidebar:
     st.divider()
     st.header("📚 AskIT knowledge base")
@@ -382,6 +398,7 @@ with st.sidebar:
     if kb_folder is None:
         st.warning("askit_data/kb not found. Run the app from inside your cloned repo, or upload the KB files below.")
     elif st.button("Load AskIT KB (20 articles)", type="primary", width="stretch"):
+        st.session_state.messages = []          # new knowledge = fresh chat
         paths = sorted(kb_folder.glob("*.md"))
         bar = st.progress(0.0, text="Indexing…")
         problems = []
@@ -398,6 +415,7 @@ with st.sidebar:
     st.caption("Changed chunk size or overlap? Click **Load AskIT KB** again: it replaces the old chunks.")
     files = st.file_uploader("…or upload your own documents", type=["pdf", "txt", "md", "docx"], accept_multiple_files=True)
     if files and st.button("Index documents", type="primary", width="stretch"):
+        st.session_state.messages = []          # new documents = fresh chat
         for f in files:
             with st.spinner(f"Indexing {f.name}…"):
                 for line in ingest(f):
@@ -465,6 +483,9 @@ with st.expander("🧪 Mini eval — how good is my retrieval? (12 AskIT questio
         st.dataframe(st.session_state.experiments, hide_index=True, width="stretch")
 
 # ---------------------------------------------------------------- UI: Chat
+if st.button("🧹 Clear chat"):
+    st.session_state.messages = []
+    st.rerun()
 st.markdown("**Try a sample question**")
 sq1, sq2 = st.columns([5, 1])
 sample = sq1.selectbox("Sample question", [q for q, _, _ in QUESTIONS], label_visibility="collapsed")

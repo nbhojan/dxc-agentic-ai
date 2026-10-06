@@ -1,3 +1,0 @@
-Orbit Corp Remote Access Troubleshooting Summary
-
-VPN error 809 can remain after ordinary connectivity checks. When a remote-access connection continues to fail, review the standard VPN troubleshooting process and escalate the persistent issue to the IT service desk. This summary discusses VPN error 809 and post-check troubleshooting, but it does not provide the specific recovery gateway name.
