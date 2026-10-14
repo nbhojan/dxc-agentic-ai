@@ -1,0 +1,10 @@
+streamlit>=1.50
+boto3
+openai>=1.40
+numpy
+pandas
+python-dotenv
+pypdf
+python-docx
+streamlit>=1.50
+pytest>=8.0
